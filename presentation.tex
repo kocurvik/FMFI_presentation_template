@@ -1,0 +1,580 @@
+\documentclass[aspectratio=169]{beamer}
+%\usetheme{Ilmenau}
+%\usecolortheme{beaver}
+
+\renewcommand{\thefootnote}{\alph{footnote}}
+\usepackage[style=numeric, sorting=none, backend=bibtex]{biblatex}
+\addbibresource{presentation.bib}
+\AtBeginBibliography{\tiny}
+
+% Change the style of the printing biblio to let appear the numbers like in the footnote
+\setbeamertemplate{bibliography item}{\insertbiblabel}
+
+\makeatletter
+\def\blfootnote{\xdef\@thefnmark{}\@footnotetext}
+\makeatother
+
+% Define the new cite command using the footnote
+\DeclareCiteCommand{\fcite}
+    {\usebibmacro{prenote}} 
+    {%
+        \renewcommand{\thefootnote}{\arabic{footnote}}% Switch to footnote with numbers.
+        \footnotemark[\thefield{labelnumber}]% Add the mark corresponding to the number entry.
+        \footnotetext[\thefield{labelnumber}]{%  Add the footnote text with same number entry.
+		\usedriver{}{\thefield{entrytype}}}%
+%        \blfootnote{%  Add the footnote text with same number entry.
+%		$[$\thefield{labelnumber}$]$ \usedriver{}{\thefield{entrytype}}%
+%        }%        
+%        \renewcommand{\thefootnote}{\alph{footnote}}% Switch back to footnote with letters.
+    }
+    {{\usebeamercolor[fg]{footnote mark}\textsuperscript,}}
+    %{\multicitedelim}
+    {\usebibmacro{postnote}} 
+    
+    
+% Define the new cite command using the footnote, use this for previously referenced worsk, so you keep the previous number
+\DeclareCiteCommand{\ffcite}
+    {\usebibmacro{prenote}} 
+    {%
+        \renewcommand{\thefootnote}{\arabic{footnote}}% Switch to footnote with numbers.
+        \footnotemark[\thefield{labelnumber}]% Add the mark corresponding to the number entry.
+%        \renewcommand{\thefootnote}{\alph{footnote}}% Switch back to footnote with letters.
+    }
+    {{\usebeamercolor[fg]{footnote mark}\textsuperscript,}}
+    %{\multicitedelim}
+    {\usebibmacro{postnote}}   
+   
+
+% Define the new cite command using the footnote for referencing images
+\DeclareCiteCommand{\imfcite}
+    {\usebibmacro{prenote}} 
+    {%
+        \renewcommand{\thefootnote}{\arabic{footnote}}% Switch to footnote with numbers.
+        %\footnotemark[\thefield{labelnumber}]% Add the mark corresponding to the number entry.
+        \blfootnote{%  Add the footnote text with same number entry.
+		Image adopted from $[$\thefield{labelnumber}$]$: \usedriver{}{\thefield{entrytype}}%
+        }%
+        \renewcommand{\thefootnote}{\alph{footnote}}% Switch back to footnote with letters.
+    }
+    {{\usebeamercolor[fg]{footnote mark}\textsuperscript{,}}%
+    }
+    %{\multicitedelim}
+    {\usebibmacro{postnote}}      
+   
+
+\usepackage{bibentry}
+
+\usepackage[american]{babel}
+%\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{adjustbox}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{wrapfig}
+\usepackage{multirow}
+\usepackage{appendixnumberbeamer}
+\usepackage{contour}
+\usepackage{listings}
+\usepackage{pgfplots}
+\usepackage{array}
+\usepackage{tikz}
+\usepgfplotslibrary{colormaps}
+
+%\usepackage{DejaVuSans}
+\usepackage[scaled]{berasans}
+\renewcommand*\familydefault{\sfdefault}  %% Only if the base font of the document is to be sans serif
+\usepackage[T1]{fontenc}
+
+    
+
+% Make tables nice otherwise the text will not align vertically with the table
+ \newsavebox\MBox
+\newcommand\Cline[2][red]{{\sbox\MBox{$#2$}%
+  \rlap{\usebox\MBox}\color{#1}\rule[-2.2\dp\MBox]{\wd\MBox}{1pt}}}
+  
+\newcommand{\secframe}[2]{
+  \setbeamercolor{background canvas}{bg=DefaultColor}
+\begin{frame}[plain, noframenumbering]
+\frametitle{~}
+  \color{white}
+  \Large #1 \\
+  \huge #2
+\end{frame}
+\setbeamercolor{background canvas}{bg=}
+}
+
+
+\usepackage{bm}
+
+\renewcommand{\vec}[1]{\bm{#1}}
+\newcommand{\mat}[1]{\mathbf{#1}}
+
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+
+% Uncomment these for FMFI orange colors
+%\definecolor{DefaultColor}{HTML}{ff8200}
+%\definecolor{Dark10}{HTML}{e66900}
+%\definecolor{Dark20}{HTML}{cc4f00}
+%\definecolor{Dark30}{HTML}{b33600}
+%\definecolor{Dark40}{HTML}{991c00}
+%\definecolor{Dark50}{HTML}{800300}
+%\definecolor{Dark60}{HTML}{660000}
+%\definecolor{Dark70}{HTML}{4d0000}
+%\definecolor{Dark80}{HTML}{330000}
+%\definecolor{Dark90}{HTML}{1a0000}
+%
+%\definecolor{Light10}{HTML}{ff9c1a}
+%\definecolor{Light20}{HTML}{ffb533}
+%\definecolor{Light30}{HTML}{ffcf4d}
+%\definecolor{Light40}{HTML}{ffe866}
+%\definecolor{Light50}{HTML}{ffff7f}
+%\definecolor{Light60}{HTML}{ffff99}
+%\definecolor{Light70}{HTML}{ffffb3}
+%\definecolor{Light80}{HTML}{ffffcc}
+%\definecolor{Light90}{HTML}{ffffe5}
+
+
+% These are the red UK colors
+\definecolor{DefaultColor}{HTML}{9e2b2f}
+\definecolor{Dark10}{HTML}{851216}
+\definecolor{Dark20}{HTML}{6b0000}
+\definecolor{Dark30}{HTML}{520000}
+\definecolor{Dark40}{HTML}{380000}
+\definecolor{Dark50}{HTML}{1f0000}
+\definecolor{Dark60}{HTML}{050000}
+
+
+\definecolor{Light10}{HTML}{884549}
+\definecolor{Light20}{HTML}{d15e62}
+\definecolor{Light30}{HTML}{eb787c}
+\definecolor{Light40}{HTML}{ff9195}
+\definecolor{Light50}{HTML}{ffaaae}
+\definecolor{Light60}{HTML}{ffc4c8}
+\definecolor{Light70}{HTML}{ffdee2}
+\definecolor{Light80}{HTML}{fff7fb}
+
+
+% add page number
+\setbeamertemplate{footline}[frame number]{}
+% remove navigation symbols
+\setbeamertemplate{navigation symbols}{}
+
+
+
+% if you need to change a color of some element you can follow this
+\setbeamertemplate{itemize item}[square]
+\setbeamercolor{itemize item}{fg = DefaultColor}
+\setbeamercolor{itemize subitem}{fg =Light10}
+\setbeamercolor{enumerate item}{fg =DefaultColor}
+\setbeamercolor{enumerate subitem}{fg =Light10}
+
+\usetheme{default}
+\beamertemplatenavigationsymbolsempty
+\setbeamercolor{title}{fg=white, bg=DefaultColor}
+\setbeamercolor{title page}{fg=white, bg=DefaultColor}
+\setbeamercolor{frametitle}{fg=white, bg=DefaultColor}
+\setbeamercolor{block title}{bg=DefaultColor, fg= white}
+\setbeamercolor{block body}{bg =Light70, fg = black}
+
+
+\setbeamercolor{bibliography item}{fg=Dark10}
+\setbeamercolor*{bibliography entry title}{fg=Dark10}
+\setbeamercolor*{bibliography entry author}{fg=Dark10}
+\setbeamercolor*{bibliography entry location}{fg=Dark10}
+\setbeamercolor*{bibliography entry note}{fg=Dark10}
+
+\setbeamercolor{footnote}{fg=Dark10}
+\setbeamercolor{footnote mark}{fg=Dark10}
+\setbeamerfont{footnote}{size=\tiny}
+\renewcommand\footnoterule{}
+
+\setbeamercolor{page number in head/foot}{fg=gray}
+\setbeamerfont{footline}{size=\footnotesize}
+
+\setbeamertemplate{frametitle}
+{%
+    \nointerlineskip
+    \begin{beamercolorbox}[wd=\paperwidth]{frametitle}
+        \usebeamerfont{frametitle}%
+        \adjustbox{raise=3.3mm, margin=5mm 1mm 1mm 1mm}{\insertframetitle}%
+        \hfill
+        \adjustbox{margin=2mm 2mm 3mm 2mm}{
+        % you can add your project logo here see example comment below
+        %\includegraphics[height=10mm]{images/logos/TERAIS}\hspace{2mm}
+        \includegraphics[height=10mm]{images/logos/UK_logo_white}%
+        \hspace{2mm}%
+        \includegraphics[height=10mm]{images/logos/FMFI_logo_white}%
+        }
+    \end{beamercolorbox}
+}
+
+% if you want to use sections, but use no subsection in the top panel you can uncomment this
+%\useoutertheme[subsection=false]{miniframes}
+%\AtBeginSection[]{\subsection{}}
+
+% removes the subsection indicators, comment this if you want to use them
+\renewcommand*{\slideentry}[6]{}
+
+%\setbeamercolor*{mini frame}{fg=white,bg=UKRosy}
+\setbeamercolor{section in head/foot}{fg=white, bg=Dark10}
+\setbeamertemplate{section in head/foot shaded}{\color{Light10}\usebeamertemplate{section in head/foot}}
+
+%\setbeamertemplate{itemize/enumerate body begin}{\normalsize}
+%\setbeamertemplate{itemize/enumerate subbody begin}{\normalsize}
+
+% version with the project logos
+%\defbeamertemplate*{title page}{customized}[1][]
+%{
+%        %\adjustbox{margin=2mm 2mm 3mm 2mm}{
+%        \includegraphics[height=18mm]{images/logos/UK_logo_white}
+%        \hspace{1mm}
+%        \includegraphics[height=18mm]{images/logos/FMFI_logo_text_white}
+%        \hspace{1mm}
+%         \\
+%        
+%        %}
+%	\vspace{5mm}
+%	
+%        \huge
+%        Sample Presentation Title\\    
+%        \normalsize     
+%        \vspace{3mm}
+%        
+%        Ing. Viktor Kocur, PhD.\\        
+%             
+%        \vspace{5mm}
+%        
+%        \normalsize
+%        
+%      
+%        \includegraphics[height=18mm]{images/logos/TERAIS}
+%	  \hspace{1mm}
+%	  \includegraphics[height=18mm]{images/logos/EU}
+%}
+
+% version without the project logos
+\defbeamertemplate*{title page}{customized}[1][]
+{
+        %\adjustbox{margin=2mm 2mm 3mm 2mm}{
+        \includegraphics[height=18mm]{images/logos/UK_logo_white}
+        \hspace{1mm}
+        \includegraphics[height=18mm]{images/logos/FMFI_logo_text_white}
+        \hspace{1mm}
+         \\
+        
+        %}
+	\vspace{5mm}
+	
+        \huge
+        Sample Presentation Title\\    
+        \normalsize     
+        \vspace{3mm}
+        
+        Ing. Viktor Kocur, PhD. \\        
+     
+% You can add some other information
+%        \vspace{1mm}   
+%        15.1.2024, Bratislava                        
+}
+
+\begin{document}
+% You can select the language
+\selectlanguage{american}
+% \selectlanguage{slovak}
+
+\setbeamercolor{background canvas}{bg=DefaultColor}
+\begin{frame}[plain]
+  \titlepage
+\end{frame}
+\setbeamercolor{background canvas}{bg=}
+
+\begin{frame}
+\frametitle{Contents}
+	It is easier to create the table of contents manually.
+	\vspace{1em}
+      \begin{itemize}\setlength{\itemsep}{1em}
+      
+      \item Basic Formatting
+      \begin{itemize}
+      \item Images
+      \item Equations
+      \item Lists
+      \item Blocks
+      \item Columns
+      \item Tables
+      \end{itemize}
+      \item Slide Controls
+      \item References
+      \end{itemize}
+\end{frame}
+
+\secframe{~}{Basic Formatting}
+
+\secframe{You can start}{Sections using the secframe command}
+
+\begin{frame}{Importing Images}
+  To import an image, use the \texttt{graphicx} package.
+
+  \centering
+  \includegraphics[width=0.5\textwidth]{example-image-a}
+
+  \medskip
+  \textbf{Caption:} Caption for example-image-a.
+\end{frame}
+
+\begin{frame}{Multiple Images}
+  You can include multiple images in a grid or side by side.
+
+  \centering
+  \begin{minipage}{0.45\textwidth}
+    \includegraphics[width=\textwidth]{example-image-a}
+
+    \medskip
+    \textbf{Caption:} Caption for example-image-a.
+  \end{minipage}
+  \hfill
+  \begin{minipage}{0.45\textwidth}
+    \includegraphics[width=\textwidth]{example-image-b}
+
+    \medskip
+    \textbf{Caption:} Caption for example-image-b.
+  \end{minipage}
+\end{frame}
+
+\begin{frame}{Mathematics in \LaTeX}
+  \textbf{Equation Environment:}
+
+  Use the \texttt{equation} environment for numbered equations.
+
+  \begin{equation}
+    E = mc^2
+  \end{equation}
+
+  This equation is automatically numbered.
+
+  \textbf{Equation* Environment:}
+
+  If you want an unnumbered equation, use the \texttt{equation*} environment.
+
+  \begin{equation*}
+    F = ma
+  \end{equation*}
+
+  This equation won't have a number.
+
+  \textbf{Inline Mathematics:}
+
+  For inline mathematics, enclose the math expression with dollar signs.
+
+  The famous equation by Euler: $e^{i\pi} + 1 = 0$
+
+  Inline mathematics doesn't get numbered.
+\end{frame}
+
+\begin{frame}{Itemization with Two Levels}
+  \textbf{Top Level Items:}
+
+  \begin{itemize}
+    \item First top-level item.
+      \begin{itemize}
+        \item First nested item.
+        \item Second nested item.
+      \end{itemize}
+    \item Second top-level item.
+      \begin{itemize}
+        \item First nested item.
+        \item Second nested item.
+      \end{itemize}
+    \item Third top-level item.
+      \begin{itemize}
+        \item First nested item.
+        \item Second nested item.
+      \end{itemize}
+  \end{itemize}
+
+  \textbf{Conclusion:}
+
+  Use the \texttt{itemize} environment for easy bullet-point lists, and you can nest items to create a hierarchy.
+\end{frame}
+
+\begin{frame}{Enumeration with Two Levels}
+  \textbf{Top Level Items:}
+
+  \begin{enumerate}
+    \item First top-level item.
+      \begin{enumerate}
+        \item First nested item.
+        \item Second nested item.
+      \end{enumerate}
+    \item Second top-level item.
+      \begin{enumerate}
+        \item First nested item.
+        \item Second nested item.
+      \end{enumerate}
+    \item Third top-level item.
+      \begin{enumerate}
+        \item First nested item.
+        \item Second nested item.
+      \end{enumerate}
+  \end{enumerate}
+
+  \textbf{Conclusion:}
+
+  Use the \texttt{enumerate} environment for numbered lists, and you can nest items to create a hierarchy.
+\end{frame}
+
+\begin{frame}{Block Environment Example}
+  \begin{block}{Introduction}
+    This is a block with a title. It can be used to highlight important information or introduce a section.
+  \end{block}
+
+  \begin{block}{Main Points}
+    \begin{itemize}
+      \item First main point.
+      \item Second main point.
+      \item Third main point.
+    \end{itemize}
+  \end{block}
+
+  \begin{block}{Conclusion}
+    In conclusion, the block environment is a versatile way to structure content in Beamer presentations.
+  \end{block}
+\end{frame}
+
+
+\begin{frame}{Two-Column Slide Example}
+  \begin{columns}[T] % Align columns at the top
+    \begin{column}{0.47\textwidth}
+      \textbf{Left Column}
+
+      \begin{itemize}
+        \item Item 1
+        \item Item 2
+        \item Item 3
+      \end{itemize}
+    \end{column}
+
+    \begin{column}{0.47\textwidth}
+      \textbf{Right Column}
+
+      \begin{enumerate}
+        \item First item
+        \item Second item
+        \item Third item
+      \end{enumerate}
+    \end{column}
+  \end{columns}
+
+  \vspace{3em} % Add some vertical space
+
+  \textbf{Conclusion:}
+
+  The `columns` environment is useful for creating multi-column layouts in Beamer presentations.
+\end{frame}
+
+\begin{frame}{Tabular Environment Example}
+  \begin{tabular}{|c|c|c|}
+    \hline
+    \textbf{Column 1} & \textbf{Column 2} & \textbf{Column 3} \\
+    \hline
+    Row 1, Cell 1 & Row 1, Cell 2 & Row 1, Cell 3 \\
+    \hline
+    Row 2, Cell 1 & Row 2, Cell 2 & Row 2, Cell 3 \\
+    \hline
+    Row 3, Cell 1 & Row 3, Cell 2 & Row 3, Cell 3 \\
+    \hline
+  \end{tabular}
+
+  \vspace{1em}
+
+  \textbf{Conclusion:}
+
+  The `tabular` environment is used to create tables in Beamer presentations. Adjust the formatting and content as needed.
+\end{frame}
+
+
+\begin{frame}{Pauses in presentation}
+  \textbf{Introduction:}
+
+  The \texttt{<>} structure after a command allows you to gradually reveal information in your presentation.
+
+  \vspace{1em}
+
+  \textbf{Example:}
+
+  \begin{itemize}
+    \item<1-> Start with an initial point.
+    \item<2-> \pause Gradually reveal the next point.
+    \item<3-> \pause Continue the sequence.
+  \end{itemize}
+
+  \vspace{1em}
+
+  \textbf{Conclusion:}
+
+  \begin{itemize}
+    \item The \texttt{<>} structure command is useful for creating step-by-step presentations.
+    \item It helps to keep the audience focused and engaged.
+  \end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Using \textbackslash pause Command}
+  \textbf{Introduction:}
+
+  The \texttt{pause} command \pause can also be used.
+  
+  \vspace{3em}
+  
+  Other beamers commands such as \texttt{onslide, alt} can also be used.
+\end{frame}
+
+\begin{frame}
+\frametitle{References}
+
+You can use some of the macros I have supplied to provide references to other works. For example you can use \texttt{fcite} command\fcite{resnet}. You can use it multiple times\fcite{pascalvoc}. If you need to use the same citation again you should use \texttt{ffcite}\ffcite{resnet}.
+
+\vspace{2em}
+
+You should include the bib information in the \texttt{presentation.bib} file.
+\end{frame}
+
+\begin{frame}{Acknowledging Image Origin}
+  To reference the source of an image you can use the \texttt{imfcite} command.
+
+  \centering
+  \includegraphics[width=0.5\textwidth]{example-image-a}\imfcite{resnet}
+
+\end{frame}
+
+
+\secframe{~}{Thank you for your attention!}
+
+\appendix
+
+\begin{frame}
+\frametitle{Appendix}
+
+You can add additional information in the appendix. These pages will not count towards the total number of pages.
+\end{frame}
+
+\secframe{~}{References}
+
+\begin{frame}[allowframebreaks]
+\frametitle{References}
+
+\setbeamercolor{bibliography item}{fg=black}
+\setbeamercolor*{bibliography entry title}{fg=black}
+\setbeamercolor*{bibliography entry author}{fg=black}
+\setbeamercolor*{bibliography entry location}{fg=black}
+\setbeamercolor*{bibliography entry note}{fg=black}
+
+\printbibliography
+\end{frame}
+
+
+
+\end{document}
