@@ -20,6 +20,10 @@
 \def\blfootnote{\xdef\@thefnmark{}\@footnotetext}
 \makeatother
 
+% Comment this if you want full citations, this should leave only authors, title, conference/journal and year. If any other type of entry comes up add \clearfield
+\AtEveryCitekey{\clearfield{pages}\clearfield{volume}\clearfield{doi}\clearfield{publisher}\clearfield{organization}\clearfield{number}\clearfield{url}\clearfield{issn}}
+\renewbibmacro{in:}{}
+
 % Define the new cite command using the footnote
 \DeclareCiteCommand{\fcite}
     {\usebibmacro{prenote}} 
